@@ -38,67 +38,67 @@ The system employs a layered approach within an IIS hosting environment:
    * **Archive Rotator:** Background Python script (rotating\_archive.py) periodically generates new JS ZIP honeypots. Typically run via Windows Task Scheduler in this environment.  
    * **Training Scripts:** Offline scripts (rag/training.py, rag/train\_markov\_postgres.py) use logs and other data to train the ML model and populate the PostgreSQL Markov database. Run manually or via Task Scheduler.
 
-### **Updated Mermaid Diagram (IIS Architecture)**
+### **Mermaid Diagram (IIS Architecture)**
 
 '''mermaid
 flowchart TD  
     subgraph "User Interaction & Edge (IIS)"  
-        A\["Web Clients or Bots"\] \-- HTTP/S Request \--\> B(IIS Port 80/443);  
-        B \-- Handled By \--\> C{ASP.NET Core Middleware App (ANCM)};  
-        C \-- Checks \--\> RDB2\[(Redis DB 2 Blocklist)\];  
-        C \-- IP Blocked \--\> D\[Return 403\];  
-        C \-- UA/Heuristic Blocked \--\> D;  
-        C \-- Heuristic Suspicious \--\> F\[Rewrite Path to Tarpit App\];  
-        C \-- Passed \--\> G\[Route Request\];  
+        A["Web Clients or Bots"] -- HTTP/S Request --> B(IIS Port 80/443);
+        B -- Handled By --> C{"ASP.NET Core Middleware App (ANCM)"};  
+        C -- Checks --> RDB2[(Redis DB 2 Blocklist)];  
+        C -- IP Blocked --> D[Return 403];  
+        C -- UA/Heuristic Blocked --> D;  
+        C -- Heuristic Suspicious --> F[Rewrite Path to Tarpit App];  
+        C -- Passed --> G[Route Request];  
     end
 
     subgraph "Backend Services (IIS Applications)"  
-        F \--\> H(Tarpit API App \- FastAPI);  
-        G \-- Route to /admin \--\> Y(Admin UI App \- Flask);  
-        G \-- Route to / \--\> I\[Your Web Application / Other Services\]; %% Route for legitimate traffic
+        F --> H(Tarpit API App - FastAPI);  
+        G -- Route to /admin --> Y(Admin UI App - Flask);  
+        G -- Route to / --> I[Your Web Application / Other Services];
 
-        H \-- Logs Hit \--\> RLOG\["logs/honeypot\_hits.log"\];  
-        H \-- Flags IP \--\> RDB1\[(Redis DB 1 Tarpit Flags)\];  
-        H \-- Reads/Updates Hop Count \--\> RDB4\[(Redis DB 4 Hop Counts)\];  
-        H \-- Updates \--\> MetricsStore\[(Metrics Store)\];  
-        H \-- Hop Limit Exceeded \--\> BLOCK\[Add IP to Redis DB 2\];  
-        BLOCK \--\> D;  
-        H \-- Hop Limit OK, POST Metadata \--\> L(Escalation Engine App \- FastAPI);  
-        H \-- Reads Markov Chain \--\> PGDB\[(PostgreSQL Markov DB)\];
+        H -- Logs Hit --> RLOG["logs/honeypot_hits.log"];  
+        H -- Flags IP --> RDB1[(Redis DB 1 Tarpit Flags)];  
+        H -- Reads/Updates Hop Count --> RDB4[(Redis DB 4 Hop Counts)];  
+        H -- Updates --> MetricsStore[(Metrics Store)];  
+        H -- Hop Limit Exceeded --> BLOCK[Add IP to Redis DB 2];  
+        BLOCK --> D;  
+        H -- Hop Limit OK, POST Metadata --> L(Escalation Engine App - FastAPI);  
+        H -- Reads Markov Chain --> PGDB[(PostgreSQL Markov DB)];
 
-        L \-- Uses/Updates \--\> RDB3\[(Redis DB 3 Freq Tracking)\];  
-        L \-- Updates \--\> MetricsStore;  
-        L \-- If Malicious, POST Webhook \--\> M(AI Service App \- FastAPI);
+        L -- Uses/Updates --> RDB3[(Redis DB 3 Freq Tracking)];  
+        L -- Updates --> MetricsStore;  
+        L -- If Malicious, POST Webhook --> M(AI Service App - FastAPI);
 
-        M \-- Adds IP \--\> RDB2;  
-        M \-- Updates \--\> MetricsStore;  
-        M \-- Sends Alerts \--\> P{"Alert Dispatcher"};  
-        P \-- Configured Method \--\> Q\[External Systems: Slack, Email, SIEM...\];
+        M -- Adds IP --> RDB2;  
+        M -- Updates --> MetricsStore;  
+        M -- Sends Alerts --> P{"Alert Dispatcher"};  
+        P -- Configured Method --> Q[External Systems: Slack, Email, SIEM...];
 
-        Y \-- Fetches \--\> MetricsEndpoint\["/admin/metrics Endpoint"\];  
-        MetricsStore \-- Provides Data \--\> MetricsEndpoint;  
-        Y \--\> Z\[Admin Dashboard\];  
+        Y -- Fetches --> MetricsEndpoint["/admin/metrics Endpoint"];  
+        MetricsStore -- Provides Data --> MetricsEndpoint;  
+        Y --> Z[Admin Dashboard];  
     end
 
     subgraph "Databases & Storage"  
         RDB1; RDB2; RDB3; RDB4; PGDB; MetricsStore;  
-        RLOG; U\["./models/\*.joblib"\]; W\["./archives ZIPs"\]; Corpus\["Text Corpus File"\];  
+        RLOG; U["./models/*.joblib"]; W["./archives ZIPs"]; Corpus["Text Corpus File"];  
     end
 
     subgraph "Background & Training Tasks (Windows Task Scheduler / Manual)"  
-        RLOG \-- Read By \--\> S(RF Training Script rag/training.py);  
-        S \-- Trains \--\> T\[Random Forest Model\];  
-        T \-- Saves \--\> U;
+        RLOG -- Read By --> S(RF Training Script rag/training.py);  
+        S -- Trains --> T[Random Forest Model];  
+        T -- Saves --> U;
 
-        Corpus \-- Read By \--\> MarkovTrain(Markov Training Script rag/train\_markov\_postgres.py);  
-        MarkovTrain \-- Populates \--\> PGDB;
+        Corpus -- Read By --> MarkovTrain(Markov Training Script rag/train_markov_postgres.py);  
+        MarkovTrain -- Populates --> PGDB;
 
-        V(Archive Rotator \- Scheduled Task) \-- Manages \--\> W;  
+        V(Archive Rotator - Scheduled Task) -- Manages --> W;  
     end
 
     %% Styling (Optional)  
-    classDef iis fill:\#e1f5fe,stroke:\#01579b,stroke-width:2px;  
-    classDef csharp fill:\#e8eaf6,stroke:\#303f9f,stroke-width:1px;  
-    classDef python fill:\#fff3e0,stroke:\#ef6c00,stroke-width:1px;  
-    classDef redis fill:\#ffeb  
-'''
+    classDef iis fill:#e1f5fe,stroke:#01579b,stroke-width:2px;  
+    classDef csharp fill:#e8eaf6,stroke:#303f9f,stroke-width:1px;  
+    classDef python fill:#fff3e0,stroke:#ef6c00,stroke-width:1px;  
+    classDef redis fill:#ffeb
+    '''

@@ -1,0 +1,61 @@
+# robots.txt for AI Scraping Defense Stack (IIS Version)
+
+# Default rules for all user agents
+User-agent: *
+
+# Disallow access to the admin interface
+Disallow: /admin/
+
+# Disallow access to the internal service endpoints
+Disallow: /anti-scrape-tarpit/
+Disallow: /tarpit/ # Also disallow direct access if mapped
+Disallow: /anti-scrape-escalation/
+Disallow: /escalate # Alias often used for escalation endpoint
+Disallow: /anti-scrape-aiservice/
+Disallow: /analyze # Alias often used for AI service endpoint
+
+# Disallow access to health check endpoints
+Disallow: /health
+Disallow: /filtering/health # If C# middleware is hosted here
+Disallow: /admin/health # If admin UI had one
+Disallow: /anti-scrape-tarpit/health
+Disallow: /anti-scrape-escalation/health
+Disallow: /anti-scrape-aiservice/health
+
+# Disallow access to generated honeypot archives
+Disallow: /archives/
+
+# Disallow access to potential data/model/config paths if exposed
+Disallow: /data/
+Disallow: /models/
+Disallow: /config/
+Disallow: /secrets/
+
+# Disallow common paths often probed by bots (adjust as needed)
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /xmlrpc.php
+Disallow: /admin.php
+Disallow: /user/login
+Disallow: /administrator/
+
+# Allow access to the root and potentially other main content paths
+# If this stack protects a specific application, ensure its main paths are allowed.
+# Example: Allow all by default unless specifically disallowed above.
+# Allow: /
+
+# Specific rules for known good crawlers (Optional - often covered by '*' allow)
+# User-agent: Googlebot
+# Allow: /
+# Disallow: /admin/
+# Disallow: /anti-scrape-*/
+# Disallow: /health
+
+# User-agent: Bingbot
+# Allow: /
+# Disallow: /admin/
+# Disallow: /anti-scrape-*/
+# Disallow: /health
+
+# Add sitemap location if applicable
+# Sitemap: https://your-iis-site.com/sitemap.xml
