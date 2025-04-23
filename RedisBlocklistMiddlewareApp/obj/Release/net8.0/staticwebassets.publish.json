@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "+O5n1EIwg+Jnr26KYsDmei8IZUAjkZOGtjpCxFVkfAc=",
+  "Source": "RedisBlocklistMiddlewareApp",
+  "BasePath": "_content/RedisBlocklistMiddlewareApp",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

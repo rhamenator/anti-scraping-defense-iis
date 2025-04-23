@@ -1,0 +1,14 @@
+D:\deploy\RedisBlocklistMiddlewareApp\RedisBlocklistMiddlewareApp.exe
+D:\deploy\RedisBlocklistMiddlewareApp\appsettings.Development.json
+D:\deploy\RedisBlocklistMiddlewareApp\appsettings.json
+D:\deploy\RedisBlocklistMiddlewareApp\RedisBlocklistMiddlewareApp.dll
+D:\deploy\RedisBlocklistMiddlewareApp\RedisBlocklistMiddlewareApp.deps.json
+D:\deploy\RedisBlocklistMiddlewareApp\RedisBlocklistMiddlewareApp.runtimeconfig.json
+D:\deploy\RedisBlocklistMiddlewareApp\RedisBlocklistMiddlewareApp.pdb
+D:\deploy\RedisBlocklistMiddlewareApp\Microsoft.AspNetCore.OpenApi.dll
+D:\deploy\RedisBlocklistMiddlewareApp\Microsoft.OpenApi.dll
+D:\deploy\RedisBlocklistMiddlewareApp\Pipelines.Sockets.Unofficial.dll
+D:\deploy\RedisBlocklistMiddlewareApp\StackExchange.Redis.dll
+D:\deploy\RedisBlocklistMiddlewareApp\Swashbuckle.AspNetCore.Swagger.dll
+D:\deploy\RedisBlocklistMiddlewareApp\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\deploy\RedisBlocklistMiddlewareApp\Swashbuckle.AspNetCore.SwaggerUI.dll

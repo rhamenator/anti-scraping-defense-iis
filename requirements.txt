@@ -1,0 +1,75 @@
+# anti-scraping-defense-iis/requirements.txt
+# Dependencies for the AI Scraping Defense Stack (Windows/IIS Version)
+# Run `pip install -r requirements.txt` in your Python environment on Windows.
+
+# --- Core Web Frameworks & Servers ---
+fastapi>=0.100.0      # Async web framework for Tarpit, Escalation, AI Service
+uvicorn[standard]>=0.20.0 # ASGI server (for FastAPI) - includes websockets, http-tools
+flask>=2.3.0          # Web framework for Admin UI
+waitress>=2.1.0       # WSGI server (Recommended for Flask app under HttpPlatformHandler)
+
+# --- HTTP Clients ---
+httpx>=0.24.0         # Async HTTP client for FastAPI services
+requests>=2.28.0      # Sync HTTP client (used in ai_service for Slack)
+
+# --- Data Validation & Processing ---
+pydantic>=2.0.0       # Data validation for FastAPI
+
+# --- Machine Learning & Data Handling (Primarily for RAG/Training) ---
+# Note: Some scikit-learn dependencies might require C++ build tools on Windows.
+# If installation fails, ensure you have Microsoft C++ Build Tools installed:
+# https://visualstudio.microsoft.com/visual-cpp-build-tools/
+joblib>=1.2.0         # Saving/loading ML models
+scikit-learn>=1.2.0   # ML algorithms (RandomForest) and metrics
+pandas>=1.5.0         # Data manipulation in training script
+# numpy is usually installed as a dependency of scikit-learn/pandas
+
+# --- Template engine (for Flask Admin UI) ---
+jinja2>=3.1.0
+
+# --- Scheduling (for Tarpit Archive Rotator) ---
+schedule>=1.1.0
+
+# --- Redis client (for Blocklisting, IP Flagging, Frequency Tracking) ---
+redis>=4.5.0
+
+# --- PostgreSQL client (for Markov DB) ---
+# Option 1: psycopg2-binary (Easier install, usually includes precompiled binaries)
+psycopg2-binary>=2.9.0
+# Option 2: psycopg2 (May require C++ build tools and PostgreSQL dev headers on Windows)
+# If psycopg2-binary causes issues, uninstall it and try installing psycopg2 after
+# ensuring build tools are available.
+# psycopg2 >= 2.9.0
+
+# --- User-Agent Parsing (Optional but recommended for better features) ---
+user-agents>=0.4.0
+
+# Email Validation (Optional, for entropy scanner)
+# No direct external library needed for the provided entropy logic
+
+# --- Optional Dependencies for Advanced Features ---
+
+# LLM Fine-tuning (Resource Intensive - Requires GPU recommended)
+# Install these only if running rag/finetune.py and have necessary hardware/drivers
+# transformers >=4.30.0
+# datasets >=2.14.0
+# evaluate >=0.4.0
+# accelerate >=0.21.0 # For distributed/mixed-precision training
+# torch >=2.0.0      # Or tensorflow if preferred backend
+
+# Local LLM Backend Interface (If calling local models directly from Python)
+# llama-cpp-python >=0.2.0 # For GGUF models via llama.cpp (May require compilation/build tools)
+
+# Alerting Integrations
+# slack_sdk >=3.20.0 # If implementing Slack alerts via dedicated SDK (requests is used currently)
+
+# Other Utilities
+# beautifulsoup4 >=4.11.0 # If scraping web pages for Markov corpus
+
+# --- Security & Best Practices ---
+# Consider using a virtual environment (e.g., python -m venv .venv)
+# For reproducible builds, consider pinning versions after testing (e.g., package==1.2.3)
+# Use `pip freeze > requirements_pinned.txt` to generate pinned versions.
+# Regularly update dependencies: `pip list --outdated`
+# Consider using security scanning tools like `pip-audit`.
+
