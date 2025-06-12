@@ -1,6 +1,6 @@
 # **AI Scraping Defense Stack (IIS Version)**
 
-* This system is a work-in-progress and not yet ready for release *
+**This system is a work-in-progress and not yet ready for release**
 
 This project provides a multi-layered defense strategy against scraping by unauthorized AI bots, specifically adapted for deployment on **Windows Server using Internet Information Services (IIS)**. It includes real-time detection, tarpitting, honeypots, and behavioral analysis with optional AI/LLM integration.
 
